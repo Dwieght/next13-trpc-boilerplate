@@ -4,7 +4,7 @@
 import { router, publicProcedure } from "../trpc";
 
 export const messageRouter = router({
-  getHello: publicProcedure.query(async () => {
-    return "Hello madlang people mabuhay! tRPC API IS READY...";
-  }),
+    getHello: publicProcedure.query(async () => {
+        return "Hello madlang people mabuhay! tRPC API IS READY...";
+    }),
 });

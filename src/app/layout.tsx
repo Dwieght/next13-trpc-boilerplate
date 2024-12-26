@@ -1,30 +1,28 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+"use client"; // Required for client-side hooks
 
+import "./globals.css";
+import { Poppins } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import Provider from "./_trpc/Provider";
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "500", "700", "900"],
-  preload: true,
+    subsets: ["latin"],
+    weight: ["300", "500", "700", "900"],
+    preload: true,
 });
 
-export const metadata: Metadata = {
-  title: "NextJS 13 + tRPC Boilerplate",
-  description: "My boilerplate using NextJS 13, tRPC, Tanstack, and Prisma",
-};
-
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <Provider>
-        <body className={poppins.className}>{children}</body>
-      </Provider>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={poppins.className}>
+                <SessionProvider>
+                    <Provider>{children}</Provider>
+                </SessionProvider>
+            </body>
+        </html>
+    );
 }
