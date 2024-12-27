@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import { Button } from "~/components/ui/button";
 export default function DashboardPage() {
     const router = useRouter();
     const { data: session, status } = useSession();
@@ -11,5 +11,10 @@ export default function DashboardPage() {
         return null;
     }
 
-    return <div>Welcome to your Dashboard{session?.user?.email}</div>;
+    return (
+        <div className="flex items-center justify-center h-screen">
+            Welcome to your Dashboard{session?.user?.email}
+            <Button>Click me</Button>
+        </div>
+    );
 }
