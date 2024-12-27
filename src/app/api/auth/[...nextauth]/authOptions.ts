@@ -1,12 +1,13 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
+import prisma from "~/config/Prisma";
+import { compare } from "bcrypt";
 
 declare module "next-auth" {
     interface User {
-        id: number;
-        name: string;
-        email: string | undefined;
+        id: string;
+        username: string;
     }
 }
 
@@ -15,24 +16,64 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "text" },
+                username: { label: "Username", type: "text" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                if (!credentials) {
-                    return null;
+                if (!credentials?.username || !credentials?.password) {
+                    throw new Error("Missing username or password");
                 }
 
-                const user = {
-                    id: 1,
-                    name: "John Doe",
-                    email: credentials.email,
-                };
+                // Find user in database
+                const user = await prisma.users.findFirst({
+                    where: {
+                        username: credentials.username,
+                    },
+                });
 
-                return user;
+                if (!user) {
+                    throw new Error("No user found");
+                }
+
+                // Compare passwords
+                const isPasswordValid = await compare(
+                    credentials.password,
+                    user.password
+                );
+
+                if (!isPasswordValid) {
+                    throw new Error("Invalid password");
+                }
+
+                return {
+                    id: user.id,
+                    username: user.username,
+                };
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                return {
+                    ...token,
+                    id: user.id,
+                    username: user.username,
+                };
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: token.id,
+                    username: token.username,
+                },
+            };
+        },
+    },
     session: {
         strategy: "jwt",
     },

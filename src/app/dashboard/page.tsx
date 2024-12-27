@@ -76,10 +76,10 @@ export default function DashboardPage() {
                     </DropdownMenu>
                 </div>
             </nav>
-            <div className="flex justify-center items-center h-52 border">
+            <div className="flex justify-center items-center h-52 ">
                 What&apos;s on your mind?
             </div>
-            <div className="flex flex-col justify-center items-center h-52 border">
+            <div className="flex flex-col justify-center items-center h-52 ">
                 <ul className="list-none">
                     {youtubeLinks?.map((link) => (
                         <li key={link.id} className="mb-2">
