@@ -1,7 +1,6 @@
+import { youtubeLink } from "./routers/youtubeLinkRouter";
 import { mergeRouters } from "./trpc";
 
-import { messageRouter } from "./routers/hello";
-
-export const appRouter = mergeRouters(messageRouter);
+export const appRouter = mergeRouters(youtubeLink);
 
 export type AppRouter = typeof appRouter;

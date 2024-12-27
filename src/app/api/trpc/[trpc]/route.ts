@@ -1,5 +1,4 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-
 import { appRouter } from "~/server";
 
 const handler = (req: Request) =>
@@ -10,10 +9,4 @@ const handler = (req: Request) =>
         createContext: () => ({}),
     });
 
-export {
-    handler as GET,
-    handler as POST,
-    handler as PATCH,
-    handler as PUT,
-    handler as DELETE,
-};
+export { handler as GET, handler as POST };

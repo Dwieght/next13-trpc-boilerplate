@@ -1,15 +1,11 @@
-"use client"; // Required for client-side hooks
-
+// app/layout.tsx
+import { Providers } from "./_trpc/Provider";
+import type { Metadata } from "next";
 import "./globals.css";
-import { Poppins } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
-import Provider from "./_trpc/Provider";
-
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["300", "500", "700", "900"],
-    preload: true,
-});
+export const metadata: Metadata = {
+    title: "MiPocket",
+    description: "Your personal pocket app",
+};
 
 export default function RootLayout({
     children,
@@ -18,10 +14,8 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={poppins.className}>
-                <SessionProvider>
-                    <Provider>{children}</Provider>
-                </SessionProvider>
+            <body>
+                <Providers>{children}</Providers>
             </body>
         </html>
     );
