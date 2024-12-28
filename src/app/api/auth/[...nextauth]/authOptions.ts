@@ -1,11 +1,23 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import type { NextAuthOptions } from "next-auth";
+import type { DefaultSession, NextAuthOptions } from "next-auth";
 import prisma from "~/config/Prisma";
 import { compare } from "bcrypt";
 
 declare module "next-auth" {
     interface User {
+        id: string;
+        username: string;
+    }
+
+    interface Session {
+        user: {
+            id: string;
+            username: string;
+        } & DefaultSession["user"];
+    }
+
+    interface JWT {
         id: string;
         username: string;
     }
